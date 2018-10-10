@@ -30,10 +30,9 @@ _dir_chomp () {
 }
 export PS1="\[\033[32m\]\$(_dir_chomp \$(pwd) 10)\[\033[33m\]\$(parse_git_branch)\[\033[00m\] \[\033[34m\]\$(basename \"\$KUBECONFIG\")\[\033[00m\] $ "
 
-# https://github.com/solsson/kubectx/tree/namespace-per-kubectl-invocation
-# https://github.com/solsson/kubectx/commit/a7a436f32d08792b52e4512807f0474a19e8ea46
 # https://github.com/solsson/kubectx/pull/1
 # Assumption: default config (~/.kube/config) is never a production cluster -- you must explicitly select those per shell
+#chmod a-w ~/.kube/config
 
 # TODO how do we get bash completion to work for kubectl aliases?
 alias k="kubectl"
