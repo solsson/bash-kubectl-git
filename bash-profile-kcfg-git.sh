@@ -53,6 +53,7 @@ kcfg() {
     done
     echo ""
   }
+  unset namespace
 }
 
 #### End prompt customization ####
