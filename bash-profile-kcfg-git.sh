@@ -30,6 +30,8 @@ _dir_chomp () {
 }
 export PS1="\[\033[32m\]\$(_dir_chomp \$(pwd) 10)\[\033[33m\]\$(parse_git_branch)\[\033[00m\] \[\033[34m\]\$(basename \"\$KUBECONFIG\")\[\033[00m\] $ "
 
+#### End prompt customization ####
+
 # https://github.com/solsson/kubectx/pull/1
 # Assumption: default config (~/.kube/config) is never a production cluster -- you must explicitly select those per shell
 #chmod a-w ~/.kube/config
@@ -37,8 +39,20 @@ export PS1="\[\033[32m\]\$(_dir_chomp \$(pwd) 10)\[\033[33m\]\$(parse_git_branch
 # TODO how do we get bash completion to work for kubectl aliases?
 alias k="kubectl"
 
+kcfg_block() {
+  KCFG="${1}"
+  echo "Block $KCFG"
+}
+
+kcfg_unblock() {
+  KCFG="${1}"
+  echo "Unblock $KCFG"
+}
+
 kcfg() {
   KCFG="${1}"
+  [ "$KCFG" == "block" ] && kcfg_block "${2}" && return
+  [ "$KCFG" == "unblock" ] && kcfg_unblock "${2}" && return
   # keep config names short and you won't need tab completion :)
   [ ! -f "$KCFG" ] && [ -f "$HOME/.kube/$KCFG" ] && KCFG="$HOME/.kube/$KCFG"
   export KUBECONFIG="$KCFG"
@@ -55,5 +69,3 @@ kcfg() {
   }
   unset namespace
 }
-
-#### End prompt customization ####
