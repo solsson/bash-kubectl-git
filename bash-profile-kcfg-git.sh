@@ -49,13 +49,8 @@ kcfg_unblock() {
   echo "Unblock $KCFG"
 }
 
-kcfg() {
-  KCFG="${1}"
-  [ "$KCFG" == "block" ] && kcfg_block "${2}" && return
-  [ "$KCFG" == "unblock" ] && kcfg_unblock "${2}" && return
-  # keep config names short and you won't need tab completion :)
-  [ ! -f "$KCFG" ] && [ -f "$HOME/.kube/$KCFG" ] && KCFG="$HOME/.kube/$KCFG"
-  export KUBECONFIG="$KCFG"
+kcfg_use() {
+  export KUBECONFIG="${1}"
   namespaces=$(kubectl --request-timeout 3 get namespace -o jsonpath="{.items[*].metadata.name}")
   [ $? -eq 0 ] && {
     echo -n "Aliases for $(basename $KUBECONFIG):"
@@ -68,4 +63,13 @@ kcfg() {
     echo ""
   }
   unset namespace
+}
+
+kcfg() {
+  KCFGOP="${1}"; KCFG="${2}"
+  [ -z "$KCFG" ] && KCFG="$KCFGOP" && KCFGOP=use
+  [ -z "$KCFG" ] && echo "Usage: kcfg [use|block|unblock] path" && return
+  # keep config names short and you won't need tab completion :)
+  [ ! -f "$KCFG" ] && [ -f "$HOME/.kube/$KCFG" ] && KCFG="$HOME/.kube/$KCFG"
+  kcfg_$KCFGOP "$KCFG"
 }
