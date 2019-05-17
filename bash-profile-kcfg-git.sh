@@ -41,7 +41,11 @@ alias k="kubectl"
 
 kcfg_block() {
   KCFG="${1}"
-  mv -v "$KCFG" "$KCFG-BLOCKED_KCFG" && echo "kind: kcfgBlocked" > "$KCFG"
+  if [ -f "$KCFG-BLOCKED_KCFG" ]; then
+    echo "Config $KCFG is already blocked"
+  else
+    mv -v "$KCFG" "$KCFG-BLOCKED_KCFG" && echo "kind: kcfgBlocked" > "$KCFG"
+  fi
 }
 
 kcfg_unblock() {
