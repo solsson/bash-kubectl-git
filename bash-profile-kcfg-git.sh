@@ -28,7 +28,7 @@ _dir_chomp () {
     done
     echo "${p[*]}"
 }
-export PS1="\[\033[32m\]\$(_dir_chomp \$(pwd) 10)\[\033[33m\]\$(parse_git_branch)\[\033[00m\] \[\033[34m\]\$(basename \"\$KUBECONFIG\")\[\033[00m\] $ "
+export PS1="\[\033[32m\]\$(_dir_chomp \$(pwd) 10)\[\033[33m\]\$(parse_git_branch)\[\033[00m\] \[\033[34m\]\$(basename \"\$KUBECONFIG\")\[\033[00m\]:$(kube_ps1) $ "
 
 #### End prompt customization ####
 
